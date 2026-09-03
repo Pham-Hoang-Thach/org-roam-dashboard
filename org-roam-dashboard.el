@@ -1,49 +1,62 @@
+;; Define a reusable button type once
+(define-button-type 'org-roam-node-button
+  'follow-link t
+  'help-echo "mouse-1, RET: Open this Org-roam note"
+  'action (lambda (btn)
+            (org-roam-node-open (button-get btn 'node))))
+
 (defun org-roam-dashboard ()
-  "Dashboard of Org-roam notes sorted by filename timestamp.
-Shows Title (fixed width, truncated) and Backlinks. Clicking opens the Org-roam node."
+  "Dashboard of Org-roam notes sorted by filename.
+Shows Title, Type, Tags, and Backlinks. Clicking Title opens the Org-roam node."
   (interactive)
   (let* ((all-nodes (org-roam-node-list))
          (all-tags (delete-dups (apply #'append (mapcar #'org-roam-node-tags all-nodes))))
          (all-types (delete-dups (mapcar #'org-roam-node-type all-nodes)))
-         (tag (completing-read "Filter by tag (RET for all): " all-tags nil t "" nil ""))
-         (type (completing-read "Filter by type (RET for all): " all-types nil t "" nil ""))
+         ;; allow multiple selections
+         (tags (completing-read-multiple "Filter by tags (comma separated, RET for all): "
+                                         all-tags nil t))
+         (types (completing-read-multiple "Filter by types (comma separated, RET for all): "
+                                          all-types nil t))
 
-         (nodes (if (string-empty-p tag)
+         ;; filter nodes by tags
+         (nodes (if (null tags)
                     all-nodes
-                  (seq-filter (lambda (n) (member tag (org-roam-node-tags n))) all-nodes)))
-         (nodes (if (string-empty-p type)
+                  (seq-filter (lambda (n)
+                                (seq-intersection tags (org-roam-node-tags n)))
+                              all-nodes)))
+         ;; filter nodes by types
+         (nodes (if (null types)
                     nodes
-                  (seq-filter (lambda (n) (equal type (org-roam-node-type n))) nodes)))
+                  (seq-filter (lambda (n)
+                                (member (org-roam-node-type n) types))
+                              nodes)))
 
+         ;; sort alphabetically by filename
          (sorted-nodes
           (seq-sort-by
            (lambda (node)
-             (let* ((fname (file-name-nondirectory (org-roam-node-file node)))
-                    (ts (car (split-string fname "-"))))
-               (if (and ts (string-match-p "^[0-9]+$" ts))
-                   ts
-                 "")))
-           #'string>
+             (file-name-nondirectory (org-roam-node-file node)))
+           #'string<
            nodes)))
     (with-current-buffer (get-buffer-create "*Org-roam Dashboard*")
       (erase-buffer)
       ;; header row
-      (insert (format "%-100s %-10s\n" "Title" "Backlinks"))
-      (insert (make-string 112 ?-) "\n")
+      (insert (format "%-60s %-15s %-40s %-10s\n" "Title" "Type" "Tags" "Backlinks"))
+      (insert (make-string 130 ?-) "\n")
       ;; rows
       (dolist (node sorted-nodes)
         (let* ((title (org-roam-node-title node))
-               ;; truncate title to 100 chars max
-               (title (if (> (length title) 100)
-                          (concat (substring title 0 97) "…")
+               (title (if (> (length title) 60)
+                          (concat (substring title 0 57) "…")
                         title))
+               (tags-str (string-join (org-roam-node-tags node) ", "))
+               (type-str (or (org-roam-node-type node) ""))
                (backlinks (length (org-roam-backlinks-get node))))
+          ;; Use the predefined button type
           (insert-text-button
-           (format "%-100s %-10d\n" title backlinks)
-           'node node
-           'action (lambda (btn)
-                     (org-roam-node-open (button-get btn 'node)))
-           'follow-link t)))
+           (format "%-60s %-15s %-40s %-10d\n" title type-str tags-str backlinks)
+           'type 'org-roam-node-button
+           'node node)))
       (goto-char (point-min))
       (org-mode)
       (display-buffer (current-buffer)))))
