@@ -1,38 +1,29 @@
 #+TITLE: Org-Roam Dashboard
 
 * Overview
-This configuration defines a custom interactive dashboard for Org-roam.
-It provides a tabular view of your notes, sorted by filename timestamp,
-with clickable entries that open the corresponding Org-roam node.
+This configuration defines a custom interactive dashboard for Org-roam. It provides a tabular view of your notes, sorted by filename timestamp, with clickable entries that open the corresponding Org-roam node. It displays your notes in a tabular view with columns for Title, Type, Tags, and Backlinks.
 
 * Features
-- *Interactive filters*: Choose a tag and/or type before building the dashboard.
-- *Columns*:
-  - Title (fixed width, truncated to 100 characters).
-  - Backlinks (number of notes linking to the current node).
-- *Sorting*: Notes are sorted by the timestamp prefix in their filename.
-- *Clickable rows*: Each row is a button; clicking opens the Org-roam node.
-- *One row per entry*: Titles are truncated to avoid wrapping.
+- Interactive dashboard buffer (*Org-roam Dashboard*).
+- Clickable Titles: open the Org-roam note immediately on first click.
+- Filter by multiple Tags and Types using minibuffer completion.
+- Filter buttons for Tags and Types appear at the top of the dashboard buffer.
+- Backlinks count shown for each note.
 
 * Usage
 1. Load the function into your Emacs configuration.
 2. Run ~M-x org-roam-dashboard~.
-3. Select a tag and type filter (or press =RET= to include all).
+3. Select (a) tag(s) and type filter (or press =RET= to include all).
 4. The dashboard buffer *Org-roam Dashboard* will appear.
 5. Click on a note title to open it directly.
 
-* Example Workflow
-- Create concept notes (e.g., "Markov Process").
-- Create exercise notes that link back to those concepts.
-- The dashboard shows each concept with its backlink count.
-- Backlinks reveal how many exercises or later notes reference the concept.
+* Dashboard Layout
+| Title | Type | Tags | Backlinks |
 
-* Why Backlinks Matter
-- Backlinks are *incoming links*: they show which notes reference the current node.
-- This makes the dashboard a cognition map:
-  - Concepts act as hubs.
-  - Exercises or later chapters link back to them.
-  - Backlinks reveal dependencies and usage across your knowledge graph.
+- *Title*: Click to open the note.
+- *Type*: Displays the Org-roam node type.
+- *Tags*: Displays all tags associated with the note.
+- *Backlinks*: Shows the number of backlinks.
 
 * Disclaimer
 This configuration is free to use and adapt for personal knowledge management.
