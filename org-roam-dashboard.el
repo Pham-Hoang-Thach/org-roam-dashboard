@@ -49,10 +49,14 @@ Shows Title, Type, Tags, and Backlinks. Clicking Title opens the Org-roam node."
                (title (if (> (length title) 60)
                           (concat (substring title 0 57) "…")
                         title))
-               (tags-str (string-join (org-roam-node-tags node) ", "))
+               ;; show only selected tags if filtering, otherwise all tags
+               (tags-str (string-join
+                          (if (null tags)
+                              (org-roam-node-tags node)
+                            (seq-intersection tags (org-roam-node-tags node)))
+                          ", "))
                (type-str (or (org-roam-node-type node) ""))
                (backlinks (length (org-roam-backlinks-get node))))
-          ;; Use the predefined button type
           (insert-text-button
            (format "%-60s %-15s %-40s %-10d\n" title type-str tags-str backlinks)
            'type 'org-roam-node-button
