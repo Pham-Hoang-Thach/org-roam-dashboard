@@ -5,15 +5,18 @@ This configuration defines a custom interactive dashboard for Org-roam. It provi
 
 * Features
 - Interactive dashboard buffer (*Org-roam Dashboard*).
+- Displays notes in a table with columns: Title, Type, Tags, Backlinks.
+- Titles styled with doom-nord palette (blue, no underline).
+- Tags truncated with "…" if too long to fit the column.
+- Sorting by timestamp in the filename (newest first).
+- Tooltip on Title shows the creation date/time parsed from the filename timestamp.
 - Clickable Titles: open the Org-roam note immediately on first click.
-- Filter by multiple Tags and Types using minibuffer completion.
-- Filter buttons for Tags and Types appear at the top of the dashboard buffer.
 - Backlinks count shown for each note.
 
 * Usage
 1. Load the function into your Emacs configuration.
 2. Run ~M-x org-roam-dashboard~.
-3. Select (a) tag(s) and type filter (or press =RET= to include all).
+3. Select (a) tag(s) and type filter (or press ~RET~ to include all).
 4. The dashboard buffer *Org-roam Dashboard* will appear.
 5. Click on a note title to open it directly.
 
@@ -22,7 +25,7 @@ This configuration defines a custom interactive dashboard for Org-roam. It provi
 
 - *Title*: Click to open the note.
 - *Type*: Displays the Org-roam node type.
-- *Tags*: Displays all tags associated with the note.
+- *Tags*: Displays all tags (truncated) associated with the note.
 - *Backlinks*: Shows the number of backlinks.
 
 * Disclaimer
