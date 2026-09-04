@@ -11,8 +11,8 @@
 
 (defun org-roam-dashboard ()
   "Dashboard of Org-roam notes sorted by timestamp in filename.
-Rows are colored alternately. Title clickable without underline.
-Tags truncated with … if too long. Tooltip shows creation date/time."
+Title clickable without underline. Tags truncated with … if too long.
+Tooltip shows creation date/time. All rows share the same background color."
   (interactive)
   (let* ((all-nodes (org-roam-node-list))
          (all-tags (delete-dups (apply #'append (mapcar #'org-roam-node-tags all-nodes))))
@@ -44,8 +44,9 @@ Tags truncated with … if too long. Tooltip shows creation date/time."
       (insert (format "%-60s %-15s %-40s %-10s\n"
                       "Title" "Type" "Tags" "Backlinks"))
       (insert (make-string 130 ?-) "\n")
-      ;; rows with alternating colors
-      (let ((row-index 0))
+      ;; rows with a single consistent background
+      (let ((bg (doom-color 'bg)) ;; one background for all rows
+            (row-face `(:background ,(doom-color 'bg) :foreground ,(doom-color 'fg))))
         (dolist (node sorted-nodes)
           (let* ((fname (file-name-nondirectory (org-roam-node-file node)))
                  ;; assume filename starts with YYYYMMDDHHMM
@@ -69,12 +70,7 @@ Tags truncated with … if too long. Tooltip shows creation date/time."
                                (concat (substring tags-full 0 37) "…")
                              tags-full))
                  (type-str (or (org-roam-node-type node) ""))
-                 (backlinks (length (org-roam-backlinks-get node)))
-                 ;; alternating background colors from doom-nord palette
-                 (bg (if (cl-evenp row-index)
-                         (doom-color 'bg-alt)
-                       (doom-color 'bg)))
-                 (row-face `(:background ,bg :foreground ,(doom-color 'fg))))
+                 (backlinks (length (org-roam-backlinks-get node))))
             ;; Title clickable, tooltip shows timestamp
             (insert-text-button (format "%-60s" title)
                                 'type 'org-roam-node-button
@@ -85,8 +81,7 @@ Tags truncated with … if too long. Tooltip shows creation date/time."
             (insert (propertize
                      (format " %-15s %-40s %-10d\n"
                              type-str tags-str backlinks)
-                     'face row-face))
-            (setq row-index (1+ row-index)))))
+                     'face row-face)))))
       (goto-char (point-min))
       (org-mode)
       (display-buffer (current-buffer)))))
