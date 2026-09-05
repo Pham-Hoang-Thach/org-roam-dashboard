@@ -1,7 +1,7 @@
 #+TITLE: Org-Roam Dashboard
 
 * Overview
-This configuration defines a custom interactive dashboard for Org-roam. It provides a tabular view of your notes, sorted by filename timestamp, with clickable entries that open the corresponding Org-roam node. It displays your notes in a tabular view with columns for Title, Type, Tags, and Backlinks.
+This configuration defines a custom interactive dashboard for Org-roam. It provides a tabular view of your notes, sorted by filename timestamp, with clickable entries that open the corresponding Org-roam node. It displays your notes in a tabular view with columns for Title, Type, Tags, Backlinks, Forward Links, and Meta Links.
 
 * Features
 - Interactive dashboard buffer (*Org-roam Dashboard*).
@@ -11,22 +11,21 @@ This configuration defines a custom interactive dashboard for Org-roam. It provi
 - Sorting by timestamp in the filename (newest first).
 - Tooltip on Title shows the creation date/time parsed from the filename timestamp.
 - Clickable Titles: open the Org-roam note immediately on first click.
-- Backlinks count shown for each note.
+- Numbers of backlinks, forward links, Meta links are shown for each note.
 
 * Usage
-1. Load the function into your Emacs configuration.
-2. Run ~M-x org-roam-dashboard~.
-3. Select (a) tag(s) and type filter (or press ~RET~ to include all).
-4. The dashboard buffer *Org-roam Dashboard* will appear.
-5. Click on a note title to open it directly.
+- ~M-x butler/org-roam-dashboard~ → shows dashboard with tag/type filters.
+- ~M-x butler/org-roam-untagged-dashboard~ → shows dashboard of notes without tags.
 
 * Dashboard Layout
-| Title | Type | Tags | Backlinks |
+| Title | Type | Tags | BL | FL | META |
 
-- *Title*: Click to open the note.
-- *Type*: Displays the Org-roam node type.
-- *Tags*: Displays all tags (truncated) associated with the note.
-- *Backlinks*: Shows the number of backlinks.
+- *Title*: Note title (clickable)
+- *Type*: Org-roam node type
+- *Tags*: Filtered tags (or all if none selected)
+- *BL*: Backlinks count
+- *FL*: Forward links count
+- *META*: Meta links count
 
 * Disclaimer
 This configuration is free to use and adapt for personal knowledge management.
