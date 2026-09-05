@@ -67,8 +67,7 @@
       (insert (format "%-40s %-12s %-25s %-5s %-5s %-5s\n"
                       "Title" "Type" "Tags" "BL" "FL" "META"))
       (insert (make-string 100 ?-) "\n")
-      (let ((bg (doom-color 'bg))
-            (row-face `(:background ,(doom-color 'bg) :foreground ,(doom-color 'fg))))
+      (let ((row-face `(:background ,(doom-color 'bg) :foreground ,(doom-color 'fg))))
         (dolist (node sorted-nodes)
           (let* ((title (org-roam-node-title node))
                  (title (if (> (length title) 40)
@@ -91,11 +90,17 @@
                  (backlinks (org-roam-backlinks-count node))
                  (counts (org-roam-link-counts node))
                  (forwardlinks (plist-get counts :forward))
-                 (metalinks (plist-get counts :meta)))
+                 (metalinks (plist-get counts :meta))
+                 ;; Tooltip timestamp
+                 (timestamp-str (format-time-string "%Y-%m-%d %H:%M"
+                                 (nth 5 (file-attributes (org-roam-node-file node))))))
             (insert-text-button (format "%-40s" title)
                                 'type 'org-roam-node-button
                                 'node node
-                                'face `(:underline nil :background ,bg :foreground ,(doom-color 'blue)))
+                                'help-echo timestamp-str
+                                'face `(:underline nil
+                                                   :background ,(doom-color 'bg)
+                                                   :foreground ,(doom-color 'blue)))
             (insert (propertize
                      (format " %-12s %-25s %-5d %-5d %-5d\n"
                              type-str tags-str backlinks forwardlinks metalinks)
@@ -124,8 +129,7 @@
       (insert (format "%-40s %-12s %-5s %-5s %-5s\n"
                       "Title" "Type" "BL" "FL" "META"))
       (insert (make-string 80 ?-) "\n")
-      (let ((bg (doom-color 'bg))
-            (row-face `(:background ,(doom-color 'bg) :foreground ,(doom-color 'fg))))
+      (let ((row-face `(:background ,(doom-color 'bg) :foreground ,(doom-color 'fg))))
         (dolist (node sorted-nodes)
           (let* ((title (org-roam-node-title node))
                  (title (if (> (length title) 40)
@@ -135,15 +139,21 @@
                  (backlinks (org-roam-backlinks-count node))
                  (counts (org-roam-link-counts node))
                  (forwardlinks (plist-get counts :forward))
-                 (metalinks (plist-get counts :meta)))
+                 (metalinks (plist-get counts :meta))
+                 ;; Tooltip timestamp
+                 (timestamp-str (format-time-string "%Y-%m-%d %H:%M"
+                                 (nth 5 (file-attributes (org-roam-node-file node))))))
             (insert-text-button (format "%-40s" title)
                                 'type 'org-roam-node-button
                                 'node node
-                                'face `(:underline nil :background ,bg :foreground ,(doom-color 'blue)))
+                                'help-echo timestamp-str
+                                'face `(:underline nil
+                                                   :background ,(doom-color 'bg)
+                                                   :foreground ,(doom-color 'blue)))
             (insert (propertize
                      (format " %-12s %-5d %-5d %-5d\n"
                              type-str backlinks forwardlinks metalinks)
                      'face row-face)))))
       (goto-char (point-min))
       (org-mode)
-      (display-buffer (current-buffer)))))
+      (display-buffer (current-buffer))))))
