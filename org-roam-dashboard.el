@@ -156,4 +156,4 @@
                      'face row-face)))))
       (goto-char (point-min))
       (org-mode)
-      (display-buffer (current-buffer))))))
+      (display-buffer (current-buffer)))))
