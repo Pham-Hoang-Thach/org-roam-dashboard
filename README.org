@@ -3,6 +3,11 @@
 * Overview
 This configuration defines a custom interactive dashboard for Org-roam. It provides a tabular view of your notes, sorted by filename timestamp, with clickable entries that open the corresponding Org-roam node. It displays your notes in a tabular view with columns for Title, Type, Tags, Backlinks, Forward Links, and Meta Links.
 
+* Requirements
+- Emacs 28+
+- Org-roam
+- Doom themes (for `doom-color`)
+
 * Features
 - Interactive dashboard buffer (*Org-roam Dashboard*).
 - Displays notes in a table with columns: Title, Type, Tags, Backlinks.
