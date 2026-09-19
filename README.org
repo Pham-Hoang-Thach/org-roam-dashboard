@@ -18,6 +18,9 @@ This configuration defines a custom interactive dashboard for Org-roam. It provi
 - Clickable Titles: open the Org-roam note immediately on first click.
 - Numbers of backlinks, forward links, Meta links are shown for each note.
 
+* Demo
+[[https://www.youtube.com/watch?v=20WfbmJmV1M][file:Org-Roam Dashboard.png]]
+
 * Usage
 - ~M-x butler/org-roam-dashboard~ → shows dashboard with tag/type filters.
 - ~M-x butler/org-roam-untagged-dashboard~ → shows dashboard of notes without tags.
