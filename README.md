@@ -19,7 +19,7 @@ This configuration defines a custom interactive dashboard for Org-roam. It provi
 - Numbers of backlinks, forward links, Meta links are shown for each note.
 
 ## Demo
-[![Watch the Video](Org-Roam Dashboard.png)](https://www.youtube.com/watch?v=20WfbmJmV1M)
+[![Watch the Video](Org-Roam-Dashboard.png)](https://www.youtube.com/watch?v=20WfbmJmV1M)
 
 ## Usage
 - `M-x butler/org-roam-dashboard` → shows dashboard with tag/type filters.
